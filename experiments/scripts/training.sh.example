@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -x
+set -e
+
+export PYTHONUNBUFFERED="True"
+
+export ITER=50000
+export EXPERIMENT="test"
+export EXPERIMENT_SUFFIX="detailed-test"
+export EXPERIMENT_FULL=$EXPERIMENT-$EXPERIMENT_SUFFIX
+OUTPATH=output/$EXPERIMENT/$EXPERIMENT_SUFFIX
+
+mkdir -p $OUTPATH
+
+LOG="$OUTPATH/$EXPERIMENT.`date +'%Y-%m-%d_%H-%M-%S'`.txt"
+exec &> >(tee -a "$LOG")
+echo Logging output to "$LOG"
+
+# Train
+time python main.py --gpu $1 \
+  --solver models/$EXPERIMENT/$EXPERIMENT_SUFFIX/solver.prototxt \
+  --exp $EXPERIMENT/$EXPERIMENT_SUFFIX \
+  --iters $ITER
+
+# Test
+time python main.py --gpu $1 \
+  --weights $OUTPATH/$EXPERIMENT_FULL"_iter_"$ITER.caffemodel \
+  --net models/$EXPERIMENT/$EXPERIMENT_SUFFIX/test.prototxt \
+  --exp $EXPERIMENT/$EXPERIMENT_SUFFIX \
+  --no-prefetch
