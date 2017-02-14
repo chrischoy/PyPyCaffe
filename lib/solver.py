@@ -1,4 +1,3 @@
-"""Train semantic segmentation network."""
 import re
 import os
 import math

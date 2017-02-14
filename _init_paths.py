@@ -1,5 +1,3 @@
-""" Add deeplab caffe path and the lib path to the PYTHONPATH """
-
 import os.path as osp
 import sys
 

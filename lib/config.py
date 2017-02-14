@@ -1,5 +1,4 @@
-"""Semantic segmentation config system.
-
+"""
 This file specifies default config options for Fast R-CNN. You should not
 change values in this file. Instead, you should write a config file (in yaml)
 and use cfg_from_file(yaml_file) to load it and override the default options.
